@@ -1,0 +1,76 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "StockNotify API",
+    "description": "RESTful API with Express",
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000/api",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "/test": {
+      "get": {
+        "summary": "[api get] test",
+        "description": "Endpoint for testing purposes",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "test",
+                  "items": {
+                    "$ref": "#/components/schemas/test"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "[api post] test",
+        "description": "Endpoint for testing purposes",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/testInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "test": {
+        "properties": {
+          "type": "string",
+          "example": "test"
+        }
+      },
+      "testInput": {
+        "properties": {
+          "testField": {
+            "type": "string",
+            "example": "testInput"
+          }
+        },
+        "required": ["testField"]
+      }
+    }
+  }
+
+}
