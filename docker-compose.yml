@@ -1,0 +1,14 @@
+services:
+  backend:
+    build:
+      context: ./backend # 後端code的路徑
+      dockerfile: /Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - TZ=Asia/Taipei
+    # healthcheck:
+    #   test: ["CMD-SHELL", "curl -f http://localhost/health"]
+    #   interval: 1m
+    #   timeout: 3s
+    #   retries: 3

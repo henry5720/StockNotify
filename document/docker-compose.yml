@@ -1,0 +1,66 @@
+networks:
+    ithelp_application:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.28.0.0/16
+                  gateway: 172.28.0.1
+volumes:
+  shared-data:
+services:
+  server:
+    build:
+      context: ./Server # 後端code的路徑
+      dockerfile: Server/Dockerfile
+    volumes: # 共享資料夾
+      - shared-data:/app/UploadFolder
+    networks:
+            ithelp_application:
+                ipv4_address: 172.28.0.2
+    ports:
+      - "7000:7000"
+    depends_on:
+      - database # 依賴數據庫服務
+    environment:
+      - TZ=Asia/Taipei
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+      - 8888:8888
+      # - 80:8888 http 預設 port 對應 container 8888 (隱藏網址port)
+      # - 443:8888 https 預設 port 對應 container 8888 (隱藏網址port)
+    networks:
+            ithelp_application:
+                ipv4_address: 172.28.0.3
+    environment:
+      - TZ=Asia/Taipei
+  database:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: Atri
+      POSTGRES_PASSWORD: volx@1688
+      POSTGRES_DB: AtriDB
+      TZ: Asia/Taipei
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data # 持久化存储数据库数据
+      - shared-data:/app/UploadFolder
+    ports:
+      - "9000:5432"
+    networks:
+            ithelp_application:
+                ipv4_address: 172.28.0.4
+  client:
+    build:
+      context: ./Client
+      dockerfile: ./Dockerfile
+    networks:
+        ithelp_application:
+            ipv4_address: 172.28.0.5
+    ports:
+      - "5000:5000"
+    environment:
+      - TZ=Asia/Taipei
