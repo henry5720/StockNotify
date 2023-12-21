@@ -6,6 +6,7 @@ import testData from "../testData/stockInfo.js";
 stockInfo.get("/stockInfo", (req, res) => {
     const stockInfo0 = new Stock(testData.msgArray[0]);
     const detail = stockInfo0.showDetail();
+    console.log({detail});
     res.json(stockInfo0);
 });
 
