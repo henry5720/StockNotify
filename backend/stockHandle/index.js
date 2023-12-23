@@ -1,4 +1,4 @@
-const obj={
+const sourceDataExample = {
     msgArray: [
         {
             tv: "2580",
@@ -37,91 +37,107 @@ const obj={
             nf: "台灣積體電路製造股份有限公司",
             y: "585.0000",
             z: "577.0000",
-            ts: "0"
-        }
+            ts: "0",
+        },
     ],
     referer: "",
     userDelay: 5000,
     rtcode: "0000",
     queryTime: {
-    sysDate: "20231221",
-    stockInfoItem: 3257,
-    stockInfo: 259528,
-    sessionStr: "UserSession",
-    sysTime: "21:26:55",
-    showChart: false,
-    sessionFromTime: -1,
-    sessionLatestTime: -1
+        sysDate: "20231221",
+        stockInfoItem: 3257,
+        stockInfo: 259528,
+        sessionStr: "UserSession",
+        sysTime: "21:26:55",
+        showChart: false,
+        sessionFromTime: -1,
+        sessionLatestTime: -1,
     },
     rtmessage: "OK",
     exKey: "if_tse_2330.tw_zh-tw.null",
-    cachedAlive: 28809
-}
+    cachedAlive: 28809,
+};
 
-const data={
-    "code": "",
-    "name": "",
-    "date": "",
-    "time": "",
-    "price": ""
-}
-
-class StackInfo{
-    constructor(data){
-        this.data=data;
+class StockInfo {
+    constructor(sourceData) {
+        this.sourceData = sourceData;
+    }
+    getEachStock() {
+        let resultData = [];
+        this.sourceData["msgArray"].forEach((element) => {
+            const eachStock = {
+                code: element["c"],
+                name: element["n"],
+                sellPrice: element["z"],
+                sellNumber: element["tv"],
+            };
+            resultData.push(eachStock);
+        });
+        console.log({ resultData });
+        return resultData;
     }
 }
 
-const setting={
+const settingExample = {
     baseUrl: "https://mis.twse.com.tw/stock/api/getStockInfo.jsp",
-    targetList:["2330", "4000"],
-    intervalTime: 1
-}
+    targetList: ["2330", "1101"],
+    intervalTime: 1,
+};
 
-class StockObserver{
-    constructor(searchInfo){
-        this.searchInfo=searchInfo;
-        this.timer=null;
+export class StockObserver {
+    constructor(searchInfo) {
+        this.searchInfo = searchInfo;
+        this.timer = null;
     }
-    getApiUrl(){
-        const baseUrl=new URL(this.searchInfo.baseUrl);
-        const result=this.handleTargetList();
+    getApiUrl() {
+        const baseUrl = new URL(this.searchInfo.baseUrl);
+        const result = this.handleTargetList();
         // console.log({result});
-        const params=baseUrl.searchParams;
+        const params = baseUrl.searchParams;
         params.set("ex_ch", result);
         return baseUrl;
     }
-    handleTargetList(){
-        const result=this.searchInfo.targetList.map(element => {
+    handleTargetList() {
+        const result = this.searchInfo.targetList.map((element) => {
             // console.log({element});
             return this.getParams(element);
         });
         return result.join("|");
     }
-    getParams(source){
-        return (source[0]==="6")?`otc_${source}.tw`:`tse_${source}.tw`;
+    getParams(source) {
+        return source[0] === "6" ? `otc_${source}.tw` : `tse_${source}.tw`;
     }
-    startTimer(interval){
-        this.callApi();
-        this.timer=setInterval(()=>this.callApi(), interval*1000);
+    /** [計時器]: 設定秒數 > 取得資料 > 處理資料
+     * @param {int} interval
+     * @returns {object}
+     */
+    startTimer(interval = 5) {
+        this.handleREsult();
+        this.timer = setInterval(() => this.handleREsult(), interval * 1000);
     }
-    async callApi(){
-        try{
-            const apiUrl=this.getApiUrl();
-            const res=await fetch(apiUrl, {
-                method: 'GET',
+    async callApi() {
+        try {
+            const apiUrl = this.getApiUrl();
+            const res = await fetch(apiUrl, {
+                method: "GET",
             });
             if (!res.ok) {
                 throw new Error(`API request failed with status ${res.status}`);
             }
-            const result=await res.json();
-            console.log({result});
-            return result
-        }
-        catch (error){
+            const result = await res.json();
+            // console.log({result});
+            return result;
+        } catch (error) {
             console.error("Error while calling API:", error);
         }
     }
+    async handleREsult() {
+        const result = await this.callApi();
+        // console.log(result.msgArray);
+        const stockInfo = new StockInfo(result);
+        return stockInfo.getEachStock();
+    }
 }
-const test1=new StockObserver(setting);
-test1.startTimer(5);
+
+// const test1=new StockObserver(settingExample);
+// test1.startTimer(10);

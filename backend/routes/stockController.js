@@ -1,13 +1,16 @@
 import { Router } from "express";
-import Stock from "../model/stockData.js";
+import { StockObserver } from "../stockHandle/index.js";
 const stockInfo = Router();
-import testData from "../testData/stockInfo.js";
+
 // GET /stockInfo
-stockInfo.get("/stockInfo", (req, res) => {
-    const stockInfo0 = new Stock(testData.msgArray[0]);
-    const detail = stockInfo0.showDetail();
-    console.log({detail});
-    res.json(stockInfo0);
+stockInfo.get("/stockInfo", async(req, res) => {
+    const setting = {
+        baseUrl: "https://mis.twse.com.tw/stock/api/getStockInfo.jsp",
+        targetList: ["2330", "1101"],
+        intervalTime: 5,
+    };
+    const observer = new StockObserver(setting);
+    res.json(await observer.handleREsult());
 });
 
 export default stockInfo;

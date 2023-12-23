@@ -18,7 +18,7 @@ const app = express();
 app.use(json()); // 中間件解析 JSON 請求主體
 app.use("/swagger", serve, setup(swaggerDocument)); // 設置 Swagger UI
 app.get("/", (req, res) => {
-        // res.redirect('/swagger');
+    // res.redirect('/swagger');
     res.send("<h1>Welcome!</h1>");
 });
 app.use("/api", test);
