@@ -4,8 +4,7 @@ import { resolve, dirname } from "path";
 import express, { json } from "express";
 import { serve, setup } from "swagger-ui-express";
 import dotenv from "dotenv";
-import test from "./routes/test.js";
-import stockInfo from "./routes/stockController.js";
+import { stockInfo } from "./routes/index.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const JsonPath = resolve(__dirname, "./swagger.json");
@@ -21,7 +20,6 @@ app.get("/", (req, res) => {
     // res.redirect('/swagger');
     res.send("<h1>Welcome!</h1>");
 });
-app.use("/api", test);
 app.use("/api", stockInfo);
 
 app.listen(port, () => console.log(`[server] http://localhost:${port}`));

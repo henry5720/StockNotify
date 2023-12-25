@@ -60,6 +60,29 @@
             "get":{
                 "tags":["stockInfo"],
                 "summary": "get stock info",
+                "parameters": [
+                    {
+                        "name": "target",
+                        "in": "query",
+                        "explode": true,
+                        "schema":{
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "example": "2330"
+                            }
+                        }
+                    },
+                    {
+                        "name": "intervalTime",
+                        "in": "query",
+                        "schema":{
+                            "type": "integer",
+                            "description": "seconds",
+                            "example": 5
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Successful response",
