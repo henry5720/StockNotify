@@ -1,7 +1,7 @@
 export class ObserverSetting {
-    constructor(baseUrl, targetList, intervalTime = 5) {
+    constructor(baseUrl, target, intervalTime = 5) {
         this.baseUrl = baseUrl;
-        this.targetList = targetList;
+        this.targetList = typeof(target)==="string"?[target]:target;
         this.intervalTime = intervalTime;
     }
 }

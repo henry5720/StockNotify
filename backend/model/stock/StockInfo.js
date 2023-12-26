@@ -13,7 +13,7 @@ export class StockInfo {
             };
             resultData.push(eachStock);
         });
-        console.log({ resultData });
+        // console.log({ resultData });
         return resultData;
     }
 }
