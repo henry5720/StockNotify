@@ -1,0 +1,10 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "henry",
+  "license": "MIT",
+  "dependencies": {
+    "socket.io-client": "^4.7.2"
+  }
+}

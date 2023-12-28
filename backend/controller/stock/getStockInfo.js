@@ -7,7 +7,7 @@ export const getStockInfo = async (req, res) => {
     // console.log({ queryParams, baseUrl, targetList, intervalTime });
     const setting = new ObserverSetting(baseUrl, target, intervalTime);
     const observer = new StockObserver(setting);
-    const result=await observer.handleREsult();
-    console.log({result});
+    const result = await observer.handleREsult();
+    console.log({ result });
     res.json(result);
 };

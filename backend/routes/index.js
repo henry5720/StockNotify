@@ -1,1 +1,1 @@
-export { stockInfo } from "./stockInfo.js";
+export { stockInfo } from "./stock/stockInfo.js";
