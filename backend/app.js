@@ -3,6 +3,7 @@ import { createServer } from "node:http";
 import { fileURLToPath } from "node:url";
 import path, { dirname, join } from "node:path";
 import { readFileSync } from "fs";
+import cookieParser from "cookie-parser";
 import { serve, setup } from "swagger-ui-express";
 import { Server } from "socket.io";
 import { stockInfo } from "./routes/index.js";
@@ -20,6 +21,7 @@ const swaggerDocument = JSON.parse(jsonContent);
 
 app.use(express.static(path.join(__dirname, "dist"))); // 設置靜態文件目錄
 app.use(json()); // 中間件解析 JSON 請求主體
+app.use(cookieParser()); // 使用 cookie-parser 中間件
 app.use("/swagger", serve, setup(swaggerDocument)); // 設置 Swagger UI
 app.use("/api", stockInfo);
 app.get("/", () => {

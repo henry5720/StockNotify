@@ -40,8 +40,7 @@ export class StockObserver {
                 throw new Error(`API request failed with status ${res.status}`);
             }
             const result = await res.json();
-            // console.log({result});
-            return result;
+            // console.log({result});0
         } catch (error) {
             console.error("Error while calling API:", error);
         }
@@ -51,5 +50,11 @@ export class StockObserver {
         // console.log(result.msgArray);
         const stockInfo = new StockInfo(result);
         return stockInfo.getEachStock();
+    }
+    stopTimer() {
+        if (this.timer) {
+            clearInterval(this.timer);
+            this.timer = null;
+        }
     }
 }
