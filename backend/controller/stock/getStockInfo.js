@@ -1,4 +1,4 @@
-const testLsit=[
+const testLsit = [
     "03912T",
     "03913C",
     "03913T",
@@ -99,11 +99,11 @@ const testLsit=[
     "039747",
     "039748",
     "03974T",
-]
+];
 
 import { StockObserver } from "../../model/index.js";
 export const getStockInfo = async (req, res) => {
-    const queryParams = req.query;
+    // const queryParams = req.query;
     const config = {
         userID: "test",
         baseUrl: process.env.MIS_TWSE_API_URL,
@@ -138,4 +138,3 @@ const checkConfig = (config) => {
         intervalTime,
     };
 };
-

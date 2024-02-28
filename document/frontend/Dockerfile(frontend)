@@ -1,0 +1,7 @@
+FROM node:19-alpine3.16
+WORKDIR /AtriApp
+COPY package.json .
+RUN yarn install
+COPY . .
+EXPOSE 5000
+ENTRYPOINT ["yarn", "start"]

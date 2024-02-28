@@ -39,7 +39,7 @@ export class StockObserver {
             if (!res.ok) {
                 throw new Error(`API request failed with status ${res.status}`);
             }
-            const result = await res.json();
+            // const result = await res.json();
             // console.log({result});0
         } catch (error) {
             console.error("Error while calling API:", error);
